@@ -1,0 +1,32 @@
+package com.inndata.modulo4.clase1.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "PERSONAD")
+public class PersonaD {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "NOMBRE")
+    private String nombre;
+
+    @Column(name = "DIRECCION")
+    private String direccion;
+
+    @Column(name = "EDAD")
+    private Integer edad;
+
+    @Column(name = "ID_DEPARTAMENTO")
+    private Integer idDepartamento;
+
+    @Column(name = "ACTIVO")
+    private Boolean activo;
+
+}
