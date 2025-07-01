@@ -19,7 +19,10 @@ public class PersonadService implements IPersonadService {
     @Override
     public List<PersonadEntity> readAll() {
         // Lógica para leer todas las personas
-        return personadRepository.findAll(); // Reemplazar con la implementación real
+        return personadRepository.findAll()
+                                 .stream()
+                                 .filter(persona -> persona.getActivo())
+                                 .toList(); // Reemplazar con la implementación real
     }
 
     @Override
@@ -35,9 +38,9 @@ public class PersonadService implements IPersonadService {
         if (personadEntity.getActivo() == null) {
             personadEntity.setActivo(true); // Asignar valor por defecto si no se especifica
         }
-        personadRepository.save(personadEntity);
+        PersonadEntity personadEntitySaved =  personadRepository.save(personadEntity);
 
-        return null; // Reemplazar con la implementación real
+        return personadEntitySaved; // Reemplazar con la implementación real
     }
 
     @Override

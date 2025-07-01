@@ -23,10 +23,13 @@ public class PersonadEntity {
     @Column(name = "EDAD")
     private Integer edad;
 
-    @Column(name = "ID_DEPARTAMENTO")
-    private Integer idDepartamento;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_DEPARTAMENTO")
+    private DepartamentoEntity idDepartamento;
 
     @Column(name = "ACTIVO")
     private Boolean activo;
+
+
 
 }
