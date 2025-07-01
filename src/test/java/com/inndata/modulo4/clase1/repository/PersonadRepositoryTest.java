@@ -1,7 +1,7 @@
 package com.inndata.modulo4.clase1.repository;
 
 
-import com.inndata.modulo4.clase1.entity.PersonaD;
+import com.inndata.modulo4.clase1.entity.PersonadEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,25 +26,25 @@ class PersonadRepositoryTest {
     @Autowired
     PersonadRepository personadRepository;
 
-    private PersonaD persona1;
-    private PersonaD persona2;
-    private PersonaD persona3;
+    private PersonadEntity persona1;
+    private PersonadEntity persona2;
+    private PersonadEntity persona3;
 
     @BeforeEach
     void setUp() {
-        persona1 = new PersonaD();
+        persona1 = new PersonadEntity();
         persona1.setNombre("Juan Perez");
         persona1.setDireccion("Calle Falsa 123");
         persona1.setEdad(30);
         persona1.setIdDepartamento(1);
 
-        persona2 = new PersonaD();
+        persona2 = new PersonadEntity();
         persona2.setNombre("Maria Lopez");
         persona2.setDireccion("Avenida Siempre Viva 456");
         persona2.setEdad(25);
         persona2.setIdDepartamento(2);
 
-        persona3 = new PersonaD();
+        persona3 = new PersonadEntity();
         persona3.setNombre("Carlos Sanchez");
         persona3.setDireccion("Boulevard de los Sueños Rotos 789");
         persona3.setEdad(40);
@@ -55,10 +55,10 @@ class PersonadRepositoryTest {
     @DisplayName("Should save and retrieve a PersonaD")
     void testSaveAndFindById() {
         // Given
-        PersonaD savedPersona = entityManager.persistAndFlush(persona1);
+        PersonadEntity savedPersona = entityManager.persistAndFlush(persona1);
 
         // When
-        Optional<PersonaD> found = personadRepository.findById(savedPersona.getId());
+        Optional<PersonadEntity> found = personadRepository.findById(savedPersona.getId());
 
         // Then
         assertThat(found.isPresent());
@@ -73,7 +73,7 @@ class PersonadRepositoryTest {
     @DisplayName("Should return empty Optional when PersonaD not found")
     void testFindByIdNotFound() {
         // When
-        Optional<PersonaD> found = personadRepository.findById(999);
+        Optional<PersonadEntity> found = personadRepository.findById(999);
 
         // Then
         assertThat(found).isEmpty();
@@ -83,7 +83,7 @@ class PersonadRepositoryTest {
     @DisplayName("Should save a PersonaD and generate ID")
     void testSavePersonaD() {
         // When
-        PersonaD saved = personadRepository.save(persona1);
+        PersonadEntity saved = personadRepository.save(persona1);
 
         // Then
         assertThat(saved.getId()).isNotNull();
@@ -102,7 +102,7 @@ class PersonadRepositoryTest {
         entityManager.persistAndFlush(persona3);
 
         // When
-        List<PersonaD> personas = personadRepository.findAll();
+        List<PersonadEntity> personas = personadRepository.findAll();
 
         // Then
         assertThat(personas).hasSize(3);
@@ -115,7 +115,7 @@ class PersonadRepositoryTest {
     @DisplayName("find all empty list when no PersonaD exists")
     void testFindAllEmpty() {
         // When
-        List<PersonaD> personas = personadRepository.findAll();
+        List<PersonadEntity> personas = personadRepository.findAll();
 
         // Then
         assertThat(personas).isEmpty();
@@ -125,12 +125,12 @@ class PersonadRepositoryTest {
     @DisplayName("Test Update a PersonaD")
     void testUpdatePersonaD() {
         // Given
-        PersonaD savedPersona = entityManager.persistAndFlush(persona1);
+        PersonadEntity savedPersona = entityManager.persistAndFlush(persona1);
         savedPersona.setNombre("Juan Perez Updated");
         savedPersona.setDireccion("Calle Actualizada 123");
 
         // When
-        PersonaD updatedPersona = personadRepository.save(savedPersona);
+        PersonadEntity updatedPersona = personadRepository.save(savedPersona);
 
         // Then
         assertThat(updatedPersona.getId()).isEqualTo(savedPersona.getId());
@@ -142,14 +142,14 @@ class PersonadRepositoryTest {
     @DisplayName("Should delete a PersonaD by ID")
     void testDeleteById() {
         // Given
-        PersonaD savedPersona = entityManager.persistAndFlush(persona1);
+        PersonadEntity savedPersona = entityManager.persistAndFlush(persona1);
 
         // When
         personadRepository.deleteById(savedPersona.getId());
         entityManager.flush();
 
         // Then
-         Optional<PersonaD> found = personadRepository.findById(savedPersona.getId());
+         Optional<PersonadEntity> found = personadRepository.findById(savedPersona.getId());
          assertThat(found).isEmpty();
     }
 

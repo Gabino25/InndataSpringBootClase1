@@ -1,6 +1,6 @@
 package com.inndata.modulo4.clase1.repository;
 
-import com.inndata.modulo4.clase1.entity.Departamento;
+import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,36 +19,36 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("Departamento Repository Integration Tests with MockBean")
-class DepartamentoRepositoryMockTest {
+class DepartamentoEntityRepositoryMockTest {
 
     @Mock
     private DepartamentoRepository departamentoRepository;
 
-    private Departamento testDepartamento1;
-    private Departamento testDepartamento2;
+    private DepartamentoEntity testDepartamentoEntity1;
+    private DepartamentoEntity testDepartamentoEntity2;
 
     @BeforeEach
     void setUp() {
-        testDepartamento1 = new Departamento();
-        testDepartamento1.setId(1);
-        testDepartamento1.setM2(75);
-        testDepartamento1.setPrecio(135000.0);
+        testDepartamentoEntity1 = new DepartamentoEntity();
+        testDepartamentoEntity1.setId(1);
+        testDepartamentoEntity1.setM2(75);
+        testDepartamentoEntity1.setPrecio(135000.0);
 
-        testDepartamento2 = new Departamento();
-        testDepartamento2.setId(2);
-        testDepartamento2.setM2(110);
-        testDepartamento2.setPrecio(200000.0);
+        testDepartamentoEntity2 = new DepartamentoEntity();
+        testDepartamentoEntity2.setId(2);
+        testDepartamentoEntity2.setM2(110);
+        testDepartamentoEntity2.setPrecio(200000.0);
     }
 
     @Test
     @DisplayName("Should mock findAll method successfully")
     void testMockFindAll() {
         // Given
-        List<Departamento> mockDepartamentos = Arrays.asList(testDepartamento1, testDepartamento2);
-        when(departamentoRepository.findAll()).thenReturn(mockDepartamentos);
+        List<DepartamentoEntity> mockDepartamentoEntities = Arrays.asList(testDepartamentoEntity1, testDepartamentoEntity2);
+        when(departamentoRepository.findAll()).thenReturn(mockDepartamentoEntities);
 
         // When
-        List<Departamento> result = departamentoRepository.findAll();
+        List<DepartamentoEntity> result = departamentoRepository.findAll();
 
         // Then
         assertThat(result).hasSize(2);
@@ -61,12 +61,12 @@ class DepartamentoRepositoryMockTest {
     @DisplayName("Should mock findById method successfully")
     void testMockFindById() {
         // Given
-        when(departamentoRepository.findById(1)).thenReturn(Optional.of(testDepartamento1));
+        when(departamentoRepository.findById(1)).thenReturn(Optional.of(testDepartamentoEntity1));
         when(departamentoRepository.findById(999)).thenReturn(Optional.empty());
 
         // When
-        Optional<Departamento> existingResult = departamentoRepository.findById(1);
-        Optional<Departamento> nonExistingResult = departamentoRepository.findById(999);
+        Optional<DepartamentoEntity> existingResult = departamentoRepository.findById(1);
+        Optional<DepartamentoEntity> nonExistingResult = departamentoRepository.findById(999);
 
         // Then
         assertThat(existingResult).isPresent();
@@ -81,25 +81,25 @@ class DepartamentoRepositoryMockTest {
     @DisplayName("Should mock save method successfully")
     void testMockSave() {
         // Given
-        Departamento newDepartamento = new Departamento();
-        newDepartamento.setM2(90);
-        newDepartamento.setPrecio(165000.0);
+        DepartamentoEntity newDepartamentoEntity = new DepartamentoEntity();
+        newDepartamentoEntity.setM2(90);
+        newDepartamentoEntity.setPrecio(165000.0);
 
-        Departamento savedDepartamento = new Departamento();
-        savedDepartamento.setId(3);
-        savedDepartamento.setM2(90);
-        savedDepartamento.setPrecio(165000.0);
+        DepartamentoEntity savedDepartamentoEntity = new DepartamentoEntity();
+        savedDepartamentoEntity.setId(3);
+        savedDepartamentoEntity.setM2(90);
+        savedDepartamentoEntity.setPrecio(165000.0);
 
-        when(departamentoRepository.save(any(Departamento.class))).thenReturn(savedDepartamento);
+        when(departamentoRepository.save(any(DepartamentoEntity.class))).thenReturn(savedDepartamentoEntity);
 
         // When
-        Departamento result = departamentoRepository.save(newDepartamento);
+        DepartamentoEntity result = departamentoRepository.save(newDepartamentoEntity);
 
         // Then
         assertThat(result.getId()).isEqualTo(3);
         assertThat(result.getM2()).isEqualTo(90);
         assertThat(result.getPrecio()).isEqualTo(165000.0);
-        verify(departamentoRepository, times(1)).save(newDepartamento);
+        verify(departamentoRepository, times(1)).save(newDepartamentoEntity);
     }
 
     @Test
@@ -151,15 +151,15 @@ class DepartamentoRepositoryMockTest {
     @DisplayName("Should mock saveAll method successfully")
     void testMockSaveAll() {
         // Given
-        List<Departamento> departamentosToSave = Arrays.asList(testDepartamento1, testDepartamento2);
+        List<DepartamentoEntity> departamentosToSave = Arrays.asList(testDepartamentoEntity1, testDepartamentoEntity2);
         when(departamentoRepository.saveAll(anyList())).thenReturn(departamentosToSave);
 
         // When
-        List<Departamento> savedDepartamentos = departamentoRepository.saveAll(departamentosToSave);
+        List<DepartamentoEntity> savedDepartamentoEntities = departamentoRepository.saveAll(departamentosToSave);
 
         // Then
-        assertThat(savedDepartamentos).hasSize(2);
-        assertThat(savedDepartamentos).containsExactlyElementsOf(departamentosToSave);
+        assertThat(savedDepartamentoEntities).hasSize(2);
+        assertThat(savedDepartamentoEntities).containsExactlyElementsOf(departamentosToSave);
         verify(departamentoRepository, times(1)).saveAll(departamentosToSave);
     }
 
@@ -181,12 +181,12 @@ class DepartamentoRepositoryMockTest {
     void testMethodCallOrder() {
         // Given
         when(departamentoRepository.existsById(1)).thenReturn(true);
-        when(departamentoRepository.findById(1)).thenReturn(Optional.of(testDepartamento1));
+        when(departamentoRepository.findById(1)).thenReturn(Optional.of(testDepartamentoEntity1));
         doNothing().when(departamentoRepository).deleteById(1);
 
         // When
         boolean exists = departamentoRepository.existsById(1);
-        Optional<Departamento> found = departamentoRepository.findById(1);
+        Optional<DepartamentoEntity> found = departamentoRepository.findById(1);
         departamentoRepository.deleteById(1);
 
         // Then
@@ -204,7 +204,7 @@ class DepartamentoRepositoryMockTest {
     @DisplayName("Should verify method was never called")
     void testMethodNeverCalled() {
         // Given
-        when(departamentoRepository.findById(1)).thenReturn(Optional.of(testDepartamento1));
+        when(departamentoRepository.findById(1)).thenReturn(Optional.of(testDepartamentoEntity1));
 
         // When
         departamentoRepository.findById(1);
@@ -212,21 +212,21 @@ class DepartamentoRepositoryMockTest {
         // Then
         verify(departamentoRepository, times(1)).findById(1);
         verify(departamentoRepository, never()).deleteById(anyInt());
-        verify(departamentoRepository, never()).save(any(Departamento.class));
+        verify(departamentoRepository, never()).save(any(DepartamentoEntity.class));
     }
 
     @Test
     @DisplayName("Should test with argument captors")
     void testWithArgumentCaptor() {
         // Given
-        when(departamentoRepository.save(any(Departamento.class))).thenReturn(testDepartamento1);
+        when(departamentoRepository.save(any(DepartamentoEntity.class))).thenReturn(testDepartamentoEntity1);
 
-        Departamento departamentoToSave = new Departamento();
-        departamentoToSave.setM2(85);
-        departamentoToSave.setPrecio(155000.0);
+        DepartamentoEntity departamentoEntityToSave = new DepartamentoEntity();
+        departamentoEntityToSave.setM2(85);
+        departamentoEntityToSave.setPrecio(155000.0);
 
         // When
-        departamentoRepository.save(departamentoToSave);
+        departamentoRepository.save(departamentoEntityToSave);
 
         // Then
         verify(departamentoRepository, times(1)).save(argThat(dept -> 

@@ -1,6 +1,6 @@
 package com.inndata.modulo4.clase1.service.impl;
 
-import com.inndata.modulo4.clase1.entity.Departamento;
+import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
 import com.inndata.modulo4.clase1.repository.DepartamentoRepository;
 import com.inndata.modulo4.clase1.service.IDepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class DepartamentoService implements IDepartamentoService {
     @Autowired
     DepartamentoRepository departamentoRepository;
     @Override
-    public List<Departamento> readAll() {
+    public List<DepartamentoEntity> readAll() {
         return departamentoRepository.findAll()
                                      .stream()
                                      .filter(departamento -> departamento.getActivo())
@@ -23,27 +23,27 @@ public class DepartamentoService implements IDepartamentoService {
     }
 
     @Override
-    public Optional<Departamento> readById(Integer id) {
+    public Optional<DepartamentoEntity> readById(Integer id) {
         return departamentoRepository.findById(id);
     }
 
     @Override
-    public Departamento create(Departamento departamento) {
-        return departamentoRepository.save(departamento);
+    public DepartamentoEntity create(DepartamentoEntity departamentoEntity) {
+        return departamentoRepository.save(departamentoEntity);
     }
 
     @Override
-    public Departamento update(Departamento departamento) {
-        return departamentoRepository.save(departamento);
+    public DepartamentoEntity update(DepartamentoEntity departamentoEntity) {
+        return departamentoRepository.save(departamentoEntity);
     }
 
     @Override
     public String deletebyId(Integer id) {
-        Optional<Departamento> departamento = departamentoRepository.findById(id);
+        Optional<DepartamentoEntity> departamento = departamentoRepository.findById(id);
         if(departamento.isPresent()){
-            Departamento departamentoValor = departamento.get();
-            departamentoValor.setActivo(false); // Cambiamos el estado a inactivo Borrado Lógico
-            departamentoRepository.save(departamentoValor);
+            DepartamentoEntity departamentoEntityValor = departamento.get();
+            departamentoEntityValor.setActivo(false); // Cambiamos el estado a inactivo Borrado Lógico
+            departamentoRepository.save(departamentoEntityValor);
             //departamentoRepository.deleteById(id); // Descomentar si se desea eliminar físicamente el registro
             return("El departamento se elimino");
         }else{
@@ -53,7 +53,7 @@ public class DepartamentoService implements IDepartamentoService {
 
 
     @Override
-    public List<Departamento> findByM2GreaterThan(Integer m2) {
+    public List<DepartamentoEntity> findByM2GreaterThan(Integer m2) {
         return departamentoRepository.findByM2GreaterThan(m2)
                                      .stream()
                                      .filter(departamento -> departamento.getActivo())
@@ -61,7 +61,7 @@ public class DepartamentoService implements IDepartamentoService {
     }
 
     @Override
-    public List<Departamento> findByM2LessThanAndPrecioGreaterThan(Integer m2, Double precio) {
+    public List<DepartamentoEntity> findByM2LessThanAndPrecioGreaterThan(Integer m2, Double precio) {
         return departamentoRepository.findByM2LessThanAndPrecioGreaterThan(m2, precio)
                                      .stream()
                                      .filter(departamento -> departamento.getActivo())
@@ -69,7 +69,7 @@ public class DepartamentoService implements IDepartamentoService {
     }
 
     @Override
-    public List<Departamento> m2MenorAndPrecioMayor(Integer m2, Double precio) {
+    public List<DepartamentoEntity> m2MenorAndPrecioMayor(Integer m2, Double precio) {
         return departamentoRepository.m2MenorAndPrecioMayor(m2, precio)
                                      .stream()
                                      .filter(departamento -> departamento.getActivo())

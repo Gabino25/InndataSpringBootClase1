@@ -1,7 +1,8 @@
 package com.inndata.modulo4.clase1.controller;
 
-import com.inndata.modulo4.clase1.entity.PersonaD;
+import com.inndata.modulo4.clase1.entity.PersonadEntity;
 import com.inndata.modulo4.clase1.service.impl.PersonadService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class PersonadController {
     // Ejemplo de método para leer todas las personas
 
      @GetMapping("/personas")
-     public List<PersonaD> readAll() {
+     public List<PersonadEntity> readAll() {
          return personadService.readAll();
      }
 
@@ -30,20 +31,20 @@ public class PersonadController {
 
     // Ejemplo de método para leer una persona por ID
      @GetMapping("/personas/{id}")
-     public Optional<PersonaD> readById(@PathVariable Integer id) {
+     public Optional<PersonadEntity> readById(@PathVariable Integer id) {
          return personadService.readById(id);
      }
 
      //Ejemplo de método para crear una nueva persona
      @PostMapping("/personas")
-     public PersonaD create(@RequestBody PersonaD personaD) {
-         return personadService.create(personaD);
+     public PersonadEntity create(@RequestBody PersonadEntity personadEntity) {
+         return personadService.create(personadEntity);
      }
 
      // Ejemplo de método para actualizar una persona existente
      @PutMapping("/personas")
-     public PersonaD update(@RequestBody PersonaD personaD) {
-         return personadService.update(personaD);
+     public PersonadEntity update(@RequestBody PersonadEntity personadEntity) {
+         return personadService.update(personadEntity);
      }
 
      // Ejemplo de método para eliminar una persona por ID
@@ -54,7 +55,7 @@ public class PersonadController {
 
     // Ejemplo de método para buscar personas por nombre
     @GetMapping("/personas/nombre")
-    public List<PersonaD> findByNombreEquals(@RequestParam("nombre") String nombre) {
+    public List<PersonadEntity> findByNombreEquals(@PathParam("nombre") String nombre) {
         return personadService.findByNombreEquals(nombre);
     }
 
