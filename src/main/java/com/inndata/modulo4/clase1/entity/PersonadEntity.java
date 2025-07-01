@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "PERSONAD")
-public class PersonaD {
+public class PersonadEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,13 @@ public class PersonaD {
     @Column(name = "EDAD")
     private Integer edad;
 
-    @Column(name = "ID_DEPARTAMENTO")
-    private Integer idDepartamento;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_DEPARTAMENTO")
+    private DepartamentoEntity idDepartamento;
 
     @Column(name = "ACTIVO")
     private Boolean activo;
+
+
 
 }

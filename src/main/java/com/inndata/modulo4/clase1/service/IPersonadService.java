@@ -1,6 +1,6 @@
 package com.inndata.modulo4.clase1.service;
 
-import com.inndata.modulo4.clase1.entity.PersonaD;
+import com.inndata.modulo4.clase1.entity.PersonadEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,20 +8,20 @@ import java.util.Optional;
 public interface IPersonadService {
 
     // Metodos Read
-    public List<PersonaD> readAll();
+    public List<PersonadEntity> readAll();
 
-    public Optional<PersonaD> readById(Integer id);
+    public Optional<PersonadEntity> readById(Integer id);
 
     // Metodo create
-    public PersonaD create(PersonaD personaD);
+    public PersonadEntity create(PersonadEntity personadEntity);
 
     // Metodo update
-    public PersonaD update(PersonaD personaD);
+    public PersonadEntity update(PersonadEntity personadEntity);
 
     // Metodo Delete
     public String deletebyId(Integer id);
 
     // Metodo para buscar personas por nombre
-    public List<PersonaD> findByNombreEquals(String nombre);
-    
+    public List<PersonadEntity> findByNombreEquals(String nombre);
+
 }

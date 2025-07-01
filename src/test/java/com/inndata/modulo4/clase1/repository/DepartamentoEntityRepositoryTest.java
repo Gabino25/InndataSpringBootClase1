@@ -1,6 +1,6 @@
 package com.inndata.modulo4.clase1.repository;
 
-import com.inndata.modulo4.clase1.entity.Departamento;
+import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("test")
 @DisplayName("Departamento Repository Tests")
-class DepartamentoRepositoryTest {
+class DepartamentoEntityRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -25,34 +25,34 @@ class DepartamentoRepositoryTest {
     @Autowired
     private DepartamentoRepository departamentoRepository;
 
-    private Departamento departamento1;
-    private Departamento departamento2;
-    private Departamento departamento3;
+    private DepartamentoEntity departamentoEntity1;
+    private DepartamentoEntity departamentoEntity2;
+    private DepartamentoEntity departamentoEntity3;
 
     @BeforeEach
     void setUp() {
         // Create test data
-        departamento1 = new Departamento();
-        departamento1.setM2(80);
-        departamento1.setPrecio(150000.0);
+        departamentoEntity1 = new DepartamentoEntity();
+        departamentoEntity1.setM2(80);
+        departamentoEntity1.setPrecio(150000.0);
 
-        departamento2 = new Departamento();
-        departamento2.setM2(120);
-        departamento2.setPrecio(220000.0);
+        departamentoEntity2 = new DepartamentoEntity();
+        departamentoEntity2.setM2(120);
+        departamentoEntity2.setPrecio(220000.0);
 
-        departamento3 = new Departamento();
-        departamento3.setM2(95);
-        departamento3.setPrecio(180000.0);
+        departamentoEntity3 = new DepartamentoEntity();
+        departamentoEntity3.setM2(95);
+        departamentoEntity3.setPrecio(180000.0);
     }
 
     @Test
     @DisplayName("Should save and retrieve a Departamento")
     void testSaveAndFindById() {
         // Given
-        Departamento savedDepartamento = entityManager.persistAndFlush(departamento1);
+        DepartamentoEntity savedDepartamentoEntity = entityManager.persistAndFlush(departamentoEntity1);
         
         // When
-        Optional<Departamento> found = departamentoRepository.findById(savedDepartamento.getId());
+        Optional<DepartamentoEntity> found = departamentoRepository.findById(savedDepartamentoEntity.getId());
         
         // Then
         assertThat(found).isPresent();
@@ -64,7 +64,7 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should return empty Optional when Departamento not found")
     void testFindByIdNotFound() {
         // When
-        Optional<Departamento> found = departamentoRepository.findById(999);
+        Optional<DepartamentoEntity> found = departamentoRepository.findById(999);
         
         // Then
         assertThat(found).isEmpty();
@@ -74,7 +74,7 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should save a Departamento and generate ID")
     void testSaveDepartamento() {
         // When
-        Departamento saved = departamentoRepository.save(departamento1);
+        DepartamentoEntity saved = departamentoRepository.save(departamentoEntity1);
         
         // Then
         assertThat(saved.getId()).isNotNull();
@@ -86,16 +86,16 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should find all Departamentos")
     void testFindAll() {
         // Given
-        entityManager.persistAndFlush(departamento1);
-        entityManager.persistAndFlush(departamento2);
-        entityManager.persistAndFlush(departamento3);
+        entityManager.persistAndFlush(departamentoEntity1);
+        entityManager.persistAndFlush(departamentoEntity2);
+        entityManager.persistAndFlush(departamentoEntity3);
         
         // When
-        List<Departamento> departamentos = departamentoRepository.findAll();
+        List<DepartamentoEntity> departamentoEntities = departamentoRepository.findAll();
         
         // Then
-        assertThat(departamentos).hasSize(3);
-        assertThat(departamentos).extracting(Departamento::getM2)
+        assertThat(departamentoEntities).hasSize(3);
+        assertThat(departamentoEntities).extracting(DepartamentoEntity::getM2)
                 .containsExactlyInAnyOrder(80, 120, 95);
     }
 
@@ -103,22 +103,22 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should return empty list when no Departamentos exist")
     void testFindAllEmpty() {
         // When
-        List<Departamento> departamentos = departamentoRepository.findAll();
+        List<DepartamentoEntity> departamentoEntities = departamentoRepository.findAll();
         
         // Then
-        assertThat(departamentos).isEmpty();
+        assertThat(departamentoEntities).isEmpty();
     }
 
     @Test
     @DisplayName("Should update an existing Departamento")
     void testUpdateDepartamento() {
         // Given
-        Departamento saved = entityManager.persistAndFlush(departamento1);
+        DepartamentoEntity saved = entityManager.persistAndFlush(departamentoEntity1);
         
         // When
         saved.setM2(100);
         saved.setPrecio(175000.0);
-        Departamento updated = departamentoRepository.save(saved);
+        DepartamentoEntity updated = departamentoRepository.save(saved);
         
         // Then
         assertThat(updated.getId()).isEqualTo(saved.getId());
@@ -130,7 +130,7 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should delete a Departamento")
     void testDeleteDepartamento() {
         // Given
-        Departamento saved = entityManager.persistAndFlush(departamento1);
+        DepartamentoEntity saved = entityManager.persistAndFlush(departamentoEntity1);
         Integer departamentoId = saved.getId();
         
         // When
@@ -138,7 +138,7 @@ class DepartamentoRepositoryTest {
         entityManager.flush();
         
         // Then
-        Optional<Departamento> deleted = departamentoRepository.findById(departamentoId);
+        Optional<DepartamentoEntity> deleted = departamentoRepository.findById(departamentoId);
         assertThat(deleted).isEmpty();
     }
 
@@ -146,7 +146,7 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should delete Departamento by ID")
     void testDeleteById() {
         // Given
-        Departamento saved = entityManager.persistAndFlush(departamento1);
+        DepartamentoEntity saved = entityManager.persistAndFlush(departamentoEntity1);
         Integer departamentoId = saved.getId();
         
         // When
@@ -154,7 +154,7 @@ class DepartamentoRepositoryTest {
         entityManager.flush();
         
         // Then
-        Optional<Departamento> deleted = departamentoRepository.findById(departamentoId);
+        Optional<DepartamentoEntity> deleted = departamentoRepository.findById(departamentoId);
         assertThat(deleted).isEmpty();
     }
 
@@ -162,7 +162,7 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should check if Departamento exists by ID")
     void testExistsById() {
         // Given
-        Departamento saved = entityManager.persistAndFlush(departamento1);
+        DepartamentoEntity saved = entityManager.persistAndFlush(departamentoEntity1);
         
         // When & Then
         assertThat(departamentoRepository.existsById(saved.getId())).isTrue();
@@ -173,8 +173,8 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should count total number of Departamentos")
     void testCount() {
         // Given
-        entityManager.persistAndFlush(departamento1);
-        entityManager.persistAndFlush(departamento2);
+        entityManager.persistAndFlush(departamentoEntity1);
+        entityManager.persistAndFlush(departamentoEntity2);
         
         // When
         long count = departamentoRepository.count();
@@ -187,10 +187,10 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should save multiple Departamentos")
     void testSaveAll() {
         // Given
-        List<Departamento> departamentos = List.of(departamento1, departamento2, departamento3);
+        List<DepartamentoEntity> departamentoEntities = List.of(departamentoEntity1, departamentoEntity2, departamentoEntity3);
         
         // When
-        List<Departamento> saved = departamentoRepository.saveAll(departamentos);
+        List<DepartamentoEntity> saved = departamentoRepository.saveAll(departamentoEntities);
         
         // Then
         assertThat(saved).hasSize(3);
@@ -201,8 +201,8 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should delete all Departamentos")
     void testDeleteAll() {
         // Given
-        entityManager.persistAndFlush(departamento1);
-        entityManager.persistAndFlush(departamento2);
+        entityManager.persistAndFlush(departamentoEntity1);
+        entityManager.persistAndFlush(departamentoEntity2);
         
         // When
         departamentoRepository.deleteAll();
@@ -216,12 +216,12 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should handle null values properly")
     void testSaveWithNullValues() {
         // Given
-        Departamento departamentoWithNulls = new Departamento();
-        departamentoWithNulls.setM2(null);
-        departamentoWithNulls.setPrecio(null);
+        DepartamentoEntity departamentoEntityWithNulls = new DepartamentoEntity();
+        departamentoEntityWithNulls.setM2(null);
+        departamentoEntityWithNulls.setPrecio(null);
         
         // When
-        Departamento saved = departamentoRepository.save(departamentoWithNulls);
+        DepartamentoEntity saved = departamentoRepository.save(departamentoEntityWithNulls);
         
         // Then
         assertThat(saved.getId()).isNotNull();
@@ -233,12 +233,12 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should save Departamento with zero values")
     void testSaveWithZeroValues() {
         // Given
-        Departamento departamentoWithZeros = new Departamento();
-        departamentoWithZeros.setM2(0);
-        departamentoWithZeros.setPrecio(0.0);
+        DepartamentoEntity departamentoEntityWithZeros = new DepartamentoEntity();
+        departamentoEntityWithZeros.setM2(0);
+        departamentoEntityWithZeros.setPrecio(0.0);
         
         // When
-        Departamento saved = departamentoRepository.save(departamentoWithZeros);
+        DepartamentoEntity saved = departamentoRepository.save(departamentoEntityWithZeros);
         
         // Then
         assertThat(saved.getId()).isNotNull();
@@ -250,12 +250,12 @@ class DepartamentoRepositoryTest {
     @DisplayName("Should save Departamento with large values")
     void testSaveWithLargeValues() {
         // Given
-        Departamento departamentoWithLargeValues = new Departamento();
-        departamentoWithLargeValues.setM2(Integer.MAX_VALUE);
-        departamentoWithLargeValues.setPrecio(Double.MAX_VALUE);
+        DepartamentoEntity departamentoEntityWithLargeValues = new DepartamentoEntity();
+        departamentoEntityWithLargeValues.setM2(Integer.MAX_VALUE);
+        departamentoEntityWithLargeValues.setPrecio(Double.MAX_VALUE);
         
         // When
-        Departamento saved = departamentoRepository.save(departamentoWithLargeValues);
+        DepartamentoEntity saved = departamentoRepository.save(departamentoEntityWithLargeValues);
         
         // Then
         assertThat(saved.getId()).isNotNull();

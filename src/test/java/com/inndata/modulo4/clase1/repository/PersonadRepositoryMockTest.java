@@ -1,6 +1,6 @@
 package com.inndata.modulo4.clase1.repository;
 
-import com.inndata.modulo4.clase1.entity.PersonaD;
+import com.inndata.modulo4.clase1.entity.PersonadEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,25 +23,25 @@ class PersonadRepositoryMockTest {
     @Mock
     PersonadRepository personadRepository;
 
-    private PersonaD persona1;
-    private PersonaD persona2;
-    private PersonaD persona3;
+    private PersonadEntity persona1;
+    private PersonadEntity persona2;
+    private PersonadEntity persona3;
 
     @BeforeEach
     void setUp() {
-        persona1 = new PersonaD();
+        persona1 = new PersonadEntity();
         persona1.setNombre("Juan Perez");
         persona1.setDireccion("Calle Falsa 123");
         persona1.setEdad(30);
         persona1.setIdDepartamento(1);
 
-        persona2 = new PersonaD();
+        persona2 = new PersonadEntity();
         persona2.setNombre("Maria Lopez");
         persona2.setDireccion("Avenida Siempre Viva 456");
         persona2.setEdad(25);
         persona2.setIdDepartamento(2);
 
-        persona3 = new PersonaD();
+        persona3 = new PersonadEntity();
         persona3.setNombre("Carlos Sanchez");
         persona3.setDireccion("Boulevard de los Sueños Rotos 789");
         persona3.setEdad(40);
@@ -52,15 +52,15 @@ class PersonadRepositoryMockTest {
     @DisplayName("Should save and retrieve a PersonaD")
     void testSave() {
         // Given
-        PersonaD savedPersona = persona1;
+        PersonadEntity savedPersona = persona1;
         savedPersona.setId(1);
 
         // Mocking the save method
-        when(personadRepository.save(any(PersonaD.class))).thenReturn(savedPersona);
+        when(personadRepository.save(any(PersonadEntity.class))).thenReturn(savedPersona);
 
         // When
-        PersonaD result = personadRepository.save(persona1);
-        Optional<PersonaD> savedEntity = Optional.of(result);
+        PersonadEntity result = personadRepository.save(persona1);
+        Optional<PersonadEntity> savedEntity = Optional.of(result);
 
         // Then
         assertThat(savedEntity).isPresent();
@@ -80,8 +80,8 @@ class PersonadRepositoryMockTest {
         when(personadRepository.findById(999)).thenReturn(Optional.empty());
 
         // When
-        Optional<PersonaD> foundPersona = personadRepository.findById(1);
-        Optional<PersonaD> notFoundPersona = personadRepository.findById(999);
+        Optional<PersonadEntity> foundPersona = personadRepository.findById(1);
+        Optional<PersonadEntity> notFoundPersona = personadRepository.findById(999);
 
         // Then
         assertThat(foundPersona).isPresent();
@@ -101,7 +101,7 @@ class PersonadRepositoryMockTest {
         when(personadRepository.findAll()).thenReturn(List.of(persona1, persona2));
 
         // When
-        List<PersonaD> result = personadRepository.findAll();
+        List<PersonadEntity> result = personadRepository.findAll();
 
         // Then
         assertThat(result).hasSize(2);
@@ -119,7 +119,7 @@ class PersonadRepositoryMockTest {
         when(personadRepository.findAll()).thenReturn(List.of());
 
         // When
-        List<PersonaD> result = personadRepository.findAll();
+        List<PersonadEntity> result = personadRepository.findAll();
 
         // Then
         assertThat(result).isEmpty();
@@ -132,10 +132,10 @@ class PersonadRepositoryMockTest {
         // Given
         persona1.setNombre("Juan Perez Updated");
         persona1.setEdad(35);
-        when(personadRepository.save(any(PersonaD.class))).thenReturn(persona1);
+        when(personadRepository.save(any(PersonadEntity.class))).thenReturn(persona1);
 
         // When
-        PersonaD updatedPersona = personadRepository.save(persona1);
+        PersonadEntity updatedPersona = personadRepository.save(persona1);
 
         // Then
         assertThat(updatedPersona.getNombre()).isEqualTo("Juan Perez Updated");
@@ -152,7 +152,7 @@ class PersonadRepositoryMockTest {
 
         // When
         personadRepository.deleteById(1);
-        Optional<PersonaD> found = personadRepository.findById(1);
+        Optional<PersonadEntity> found = personadRepository.findById(1);
 
         // Then
         assertThat(found).isEmpty();
