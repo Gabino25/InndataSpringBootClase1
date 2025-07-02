@@ -1,6 +1,7 @@
 package  com.inndata.modulo4.clase1.controller;
 
 import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
+import com.inndata.modulo4.clase1.response.DepartamentoResponse;
 import com.inndata.modulo4.clase1.service.impl.DepartamentoService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class DepartamentoController {
     DepartamentoService departamentoService;
     //GetMapping son para los metodos de lectura
     @GetMapping("/departamentos")
-    public List<DepartamentoEntity> readAll(){
+    public List<DepartamentoResponse> readAll(){
         return departamentoService.readAll();
     }
     @GetMapping("/departamentos/{id}")
@@ -27,7 +28,7 @@ public class DepartamentoController {
     //La diferencia entre create y update es que uno es PutMapping(update)
     // y el otro es PostMapping(create)
     @PostMapping("/departamentos")
-    public DepartamentoEntity create(@RequestBody DepartamentoEntity departamentoEntity){
+    public DepartamentoResponse create(@RequestBody DepartamentoEntity departamentoEntity){
         return departamentoService.create(departamentoEntity);
     }
 

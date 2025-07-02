@@ -1,13 +1,17 @@
 package com.inndata.modulo4.clase1.service.impl;
 
+import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
 import com.inndata.modulo4.clase1.entity.PersonadEntity;
+import com.inndata.modulo4.clase1.repository.DepartamentoRepository;
 import com.inndata.modulo4.clase1.repository.PersonadRepository;
+import com.inndata.modulo4.clase1.response.PersonadResponse;
 import com.inndata.modulo4.clase1.service.IPersonadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class PersonadService implements IPersonadService {
@@ -16,12 +20,30 @@ public class PersonadService implements IPersonadService {
     @Autowired
     PersonadRepository personadRepository;
 
+    @Autowired
+    DepartamentoRepository departamentoRepository;
+
     @Override
-    public List<PersonadEntity> readAll() {
+    public List<PersonadResponse> readAll() {
+
+        Function<PersonadEntity, PersonadResponse> mapToResponse = new Function<PersonadEntity, PersonadResponse>() {
+            @Override
+            public PersonadResponse apply(PersonadEntity personadEntity) {
+                PersonadResponse personadResponse = new PersonadResponse();
+                personadResponse.setId(personadEntity.getId());
+                personadResponse.setNombre(personadEntity.getNombre());
+                personadResponse.setEdad(personadEntity.getEdad());
+                personadResponse.setIdDepartamento(personadEntity.getIdDepartamento().getId());
+                personadResponse.setPrecio(personadEntity.getIdDepartamento().getPrecio());
+                return personadResponse;
+            }
+        };
+
         // Lógica para leer todas las personas
         return personadRepository.findAll()
                                  .stream()
                                  .filter(persona -> persona.getActivo())
+                                 .map(mapToResponse)
                                  .toList(); // Reemplazar con la implementación real
     }
 
@@ -32,15 +54,36 @@ public class PersonadService implements IPersonadService {
     }
 
     @Override
-    public PersonadEntity create(PersonadEntity personadEntity) {
+    public PersonadResponse create(PersonadEntity personadEntity) {
         // Lógica para crear una nueva persona
+
+        try{
+            if(personadEntity.getIdDepartamento()!=null){
+                Optional<DepartamentoEntity> optDep = departamentoRepository.findById(personadEntity.getIdDepartamento().getId());
+                if(optDep.isEmpty()){
+                    System.out.println("Departamento no encontrado");
+                }
+                personadEntity.setIdDepartamento(optDep.get());
+            }
+            PersonadEntity personaGuardada = personadRepository.save(personadEntity);
+        } catch (Exception e) {
+            System.out.println("Error al guardar la persona: " + e.getMessage());
+            return null; // O manejar el error de otra manera
+        }
 
         if (personadEntity.getActivo() == null) {
             personadEntity.setActivo(true); // Asignar valor por defecto si no se especifica
         }
         PersonadEntity personadEntitySaved =  personadRepository.save(personadEntity);
 
-        return personadEntitySaved; // Reemplazar con la implementación real
+        PersonadResponse personadResponse = new PersonadResponse(personadEntitySaved.getId(),
+                                                                 personadEntitySaved.getNombre(),
+                                                                 personadEntitySaved.getEdad(),
+                                                                 personadEntitySaved.getIdDepartamento().getId(),
+                                                                 personadEntitySaved.getIdDepartamento().getPrecio()
+                                                                 );
+
+        return personadResponse; // Reemplazar con la implementación real
     }
 
     @Override

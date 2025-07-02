@@ -1,6 +1,8 @@
 package com.inndata.modulo4.clase1.controller;
 
+import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
 import com.inndata.modulo4.clase1.entity.PersonadEntity;
+import com.inndata.modulo4.clase1.response.PersonadResponse;
 import com.inndata.modulo4.clase1.service.impl.PersonadService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class PersonadController {
     // Ejemplo de método para leer todas las personas
 
      @GetMapping("/personas")
-     public List<PersonadEntity> readAll() {
+     public List<PersonadResponse> readAll() {
          return personadService.readAll();
      }
 
@@ -37,7 +39,7 @@ public class PersonadController {
 
      //Ejemplo de método para crear una nueva persona
      @PostMapping("/personas")
-     public PersonadEntity create(@RequestBody PersonadEntity personadEntity) {
+     public PersonadResponse create(@RequestBody PersonadEntity personadEntity) {
          return personadService.create(personadEntity);
      }
 

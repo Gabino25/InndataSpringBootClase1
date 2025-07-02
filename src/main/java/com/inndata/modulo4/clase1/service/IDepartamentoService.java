@@ -1,6 +1,7 @@
 package com.inndata.modulo4.clase1.service;
 
 import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
+import com.inndata.modulo4.clase1.response.DepartamentoResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,10 +9,10 @@ import java.util.Optional;
 public interface IDepartamentoService {
 
     //Metodos Read
-    public List<DepartamentoEntity> readAll();
+    public List<DepartamentoResponse> readAll();
     public Optional<DepartamentoEntity> readById(Integer id);
     //Metodo create
-    public DepartamentoEntity create(DepartamentoEntity departamentoEntity);
+    public DepartamentoResponse create(DepartamentoEntity departamentoEntity);
     //Metodo update
     public DepartamentoEntity update(DepartamentoEntity departamentoEntity);
     //Metodo Delete

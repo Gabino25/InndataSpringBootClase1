@@ -2,12 +2,14 @@ package com.inndata.modulo4.clase1.service.impl;
 
 import com.inndata.modulo4.clase1.entity.DepartamentoEntity;
 import com.inndata.modulo4.clase1.repository.DepartamentoRepository;
+import com.inndata.modulo4.clase1.response.DepartamentoResponse;
 import com.inndata.modulo4.clase1.service.IDepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class DepartamentoService implements IDepartamentoService {
@@ -15,10 +17,22 @@ public class DepartamentoService implements IDepartamentoService {
     @Autowired
     DepartamentoRepository departamentoRepository;
     @Override
-    public List<DepartamentoEntity> readAll() {
+    public List<DepartamentoResponse> readAll() {
+
+        Function<DepartamentoEntity, DepartamentoResponse> mapToResponse = new Function<DepartamentoEntity, DepartamentoResponse>() {
+            @Override
+            public DepartamentoResponse apply(DepartamentoEntity departamentoEntity) {
+                DepartamentoResponse departamentoResponse = new DepartamentoResponse();
+                departamentoResponse.setId(departamentoEntity.getId());
+                departamentoResponse.setPrecio(departamentoEntity.getPrecio());
+                return departamentoResponse;
+            }
+        };
+
         return departamentoRepository.findAll()
                                      .stream()
                                      .filter(departamento -> departamento.getActivo())
+                                     .map(mapToResponse)
                                      .toList();
     }
 
@@ -28,8 +42,12 @@ public class DepartamentoService implements IDepartamentoService {
     }
 
     @Override
-    public DepartamentoEntity create(DepartamentoEntity departamentoEntity) {
-        return departamentoRepository.save(departamentoEntity);
+    public DepartamentoResponse create(DepartamentoEntity departamentoEntity) {
+        DepartamentoEntity departamentoEntitySaved = departamentoRepository.save(departamentoEntity);
+        DepartamentoResponse departamentoResponse = new DepartamentoResponse();
+        departamentoResponse.setId(departamentoEntitySaved.getId());
+        departamentoResponse.setPrecio(departamentoEntitySaved.getPrecio());
+        return departamentoResponse;
     }
 
     @Override
